@@ -8,7 +8,8 @@
     "run:ios": "react-native run-ios --simulator=\"iPhone X\"",
     "build:apk": "cd android && ./gradlew assembleRelease",
     "test": "jest",
-    "prepare": "patch-package"
+    "prepare": "patch-package",
+    "deploy-functions": "firebase deploy --only functions"
   },
   "dependencies": {
     "@react-native-firebase/app": "6.3.4",

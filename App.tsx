@@ -39,11 +39,11 @@ export default class App extends Component<Props> {
     // firestore()
     //   .collection("games")
     //   .add(game);
-    // const unsubscribe = firestore()
-    //   .doc("users/bob")
-    //   .onSnapshot(docSnapshot => {
-    //     console.log(docSnapshot);
-    //   });
+    const unsubscribe = firestore()
+      .doc("games/hP7QUUEDeuNMIjUTUQFu")
+      .onSnapshot(docSnapshot => {
+        console.log(docSnapshot);
+      });
   }
 
   render() {

@@ -7,15 +7,15 @@ import { Player } from "./Player";
 // Player Two sits to left of Player One
 
 export type Game = {
-  players: [string, string, string, string];
-  currentRound: Round | undefined;
+  players: [string | null, string | null, string | null, string | null];
+  currentRound: Round | null;
   finishedRounds: Array<[Team, RoundOutcome]>;
 };
 
 export function createGame(): Game {
   return {
-    players: ["A", "B", "C", "D"],
-    currentRound: createRound(Player.One),
+    players: [null, null, null, null],
+    currentRound: null,
     finishedRounds: []
   };
 }

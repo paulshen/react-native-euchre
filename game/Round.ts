@@ -16,19 +16,19 @@ export enum RoundOutcome {
   Alone5
 }
 
-export type Turn = { [player: number]: Card };
+export type Trick = { [player: number]: Card };
 
 export type Round = {
   turnPlayer: Player;
   turnAction: TurnAction;
 
   hands: { [player: number]: Array<Card> };
-  currentTurn: Turn | undefined;
-  playedTurns: Array<Turn>;
+  currentTrick: Trick | null;
+  finishedTricks: Array<Trick>;
 
   dealer: Player;
-  trumpCaller: Player | undefined;
-  trumpSuit: CardSuit | undefined;
+  trumpCaller: Player | null;
+  trumpSuit: CardSuit | null;
   flippedCard: Card;
 };
 
@@ -45,12 +45,12 @@ export function createRound(dealer: Player): Round {
       [Player.Three]: cards[2],
       [Player.Four]: cards[3]
     },
-    currentTurn: undefined,
-    playedTurns: [],
+    currentTrick: null,
+    finishedTricks: [],
 
     dealer,
-    trumpCaller: undefined,
-    trumpSuit: undefined,
+    trumpCaller: null,
+    trumpSuit: null,
     flippedCard: cards[4]
   };
 }
