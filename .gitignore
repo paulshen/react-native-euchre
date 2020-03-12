@@ -59,3 +59,4 @@ buck-out/
 /ios/Pods/
 
 GoogleService-Info.plist
+.vscode/.react/
