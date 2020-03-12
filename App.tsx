@@ -10,7 +10,8 @@ import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 
 import firebase from "@react-native-firebase/app";
-// import firestore from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
+import { createGame } from "./game/Game";
 
 // TODO(you): import any additional firebase services that you require for your app, e.g for auth:
 //    1) install the npm package: `yarn add @react-native-firebase/auth@alpha` - you do not need to
@@ -34,6 +35,10 @@ type Props = {};
 
 export default class App extends Component<Props> {
   componentDidMount() {
+    // const game = createGame();
+    // firestore()
+    //   .collection("games")
+    //   .add(game);
     // const unsubscribe = firestore()
     //   .doc("users/bob")
     //   .onSnapshot(docSnapshot => {

@@ -1,5 +1,6 @@
-import { Round, RoundOutcome } from "./Round";
+import { Round, RoundOutcome, createRound } from "./Round";
 import { Team } from "./Team";
+import { Player } from "./Player";
 
 // Team One: Player One + Three
 // Team Two: Player Two + Four
@@ -14,7 +15,7 @@ export type Game = {
 export function createGame(): Game {
   return {
     players: ["A", "B", "C", "D"],
-    currentRound: undefined,
+    currentRound: createRound(Player.One),
     finishedRounds: []
   };
 }

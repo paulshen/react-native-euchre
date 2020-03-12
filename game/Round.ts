@@ -16,13 +16,13 @@ export enum RoundOutcome {
   Alone5
 }
 
-export type Turn = Map<Player, Card>;
+export type Turn = { [player: number]: Card };
 
 export type Round = {
   turnPlayer: Player;
   turnAction: TurnAction;
 
-  hands: [Array<Card>, Array<Card>, Array<Card>, Array<Card>];
+  hands: { [player: number]: Array<Card> };
   currentTurn: Turn | undefined;
   playedTurns: Array<Turn>;
 
@@ -39,7 +39,12 @@ export function createRound(dealer: Player): Round {
     turnPlayer: playerToLeft(dealer),
     turnAction: TurnAction.CallFlippedTrump,
 
-    hands: [cards[0], cards[1], cards[2], cards[3]],
+    hands: {
+      [Player.One]: cards[0],
+      [Player.Two]: cards[1],
+      [Player.Three]: cards[2],
+      [Player.Four]: cards[3]
+    },
     currentTurn: undefined,
     playedTurns: [],
 
