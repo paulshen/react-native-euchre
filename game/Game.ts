@@ -8,8 +8,8 @@ import { Player } from "./Player";
 
 export type Game = {
   players: [string | null, string | null, string | null, string | null];
-  currentRound: Round | null;
-  finishedRounds: Array<[Team, RoundOutcome]>;
+  currentRound?: Round | null;
+  finishedRounds?: Array<[Team, RoundOutcome]>;
 };
 
 export function createGame(): Game {

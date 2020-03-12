@@ -3,6 +3,7 @@ import * as React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
+import ActiveGameScreen from "./ActiveGameScreen";
 import EnterGameScreen from "./EnterGameScreen";
 import WaitingRoomScreen from "./WaitingRoomScreen";
 
@@ -32,9 +33,13 @@ export default function GameScreen() {
       />
     );
   } else if (game !== null) {
-    body = (
-      <WaitingRoomScreen gameId={gameId} game={game} playerId={playerId} />
-    );
+    if (!game.currentRound) {
+      body = (
+        <WaitingRoomScreen gameId={gameId} game={game} playerId={playerId} />
+      );
+    } else {
+      body = <ActiveGameScreen game={game} playerId={playerId} />;
+    }
   } else {
     body = (
       <View style={styles.loading}>

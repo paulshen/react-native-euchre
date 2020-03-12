@@ -57,10 +57,44 @@ export function deal(): [
 ] {
   const shuffledCards = shuffleArrayInPlace(createAllCards());
   return [
-    shuffledCards.slice(0, 4),
-    shuffledCards.slice(5, 9),
-    shuffledCards.slice(10, 14),
-    shuffledCards.slice(15, 19),
+    shuffledCards.slice(0, 5),
+    shuffledCards.slice(5, 10),
+    shuffledCards.slice(10, 15),
+    shuffledCards.slice(15, 20),
     shuffledCards[20]
   ];
+}
+
+function suitToString(suit: CardSuit): string {
+  switch (suit) {
+    case CardSuit.Club:
+      return "C";
+    case CardSuit.Diamond:
+      return "D";
+    case CardSuit.Heart:
+      return "H";
+    case CardSuit.Spade:
+      return "S";
+  }
+}
+
+function rankToString(rank: CardRank): string {
+  switch (rank) {
+    case CardRank.Nine:
+      return "9";
+    case CardRank.Ten:
+      return "10";
+    case CardRank.Jack:
+      return "J";
+    case CardRank.Queen:
+      return "Q";
+    case CardRank.King:
+      return "K";
+    case CardRank.Ace:
+      return "A";
+  }
+}
+
+export function cardToString(card: Card): string {
+  return `${rankToString(card.rank)}${suitToString(card.suit)}`;
 }
