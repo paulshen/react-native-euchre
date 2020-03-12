@@ -10,6 +10,7 @@ import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 
 import firebase from "@react-native-firebase/app";
+// import firestore from "@react-native-firebase/firestore";
 
 // TODO(you): import any additional firebase services that you require for your app, e.g for auth:
 //    1) install the npm package: `yarn add @react-native-firebase/auth@alpha` - you do not need to
@@ -32,6 +33,14 @@ const firebaseCredentials = Platform.select({
 type Props = {};
 
 export default class App extends Component<Props> {
+  componentDidMount() {
+    // const unsubscribe = firestore()
+    //   .doc("users/bob")
+    //   .onSnapshot(docSnapshot => {
+    //     console.log(docSnapshot);
+    //   });
+  }
+
   render() {
     return (
       <View style={styles.container}>
