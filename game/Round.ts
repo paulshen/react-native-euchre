@@ -1,5 +1,5 @@
-import { Card, CardSuit } from "./Card";
-import { Player } from "./Player";
+import { Card, CardSuit, deal } from "./Card";
+import { Player, playerToLeft } from "./Player";
 
 export enum TurnAction {
   CallFlippedTrump,
@@ -16,17 +16,36 @@ export enum RoundOutcome {
   Alone5
 }
 
+export type Turn = Map<Player, Card>;
+
 export type Round = {
   turnPlayer: Player;
   turnAction: TurnAction;
 
-  cards: [Array<Card>, Array<Card>, Array<Card>, Array<Card>];
-  currentHand: Map<Player, Card> | undefined;
-  playedHands: Array<Map<Player, Card>>;
+  hands: [Array<Card>, Array<Card>, Array<Card>, Array<Card>];
+  currentTurn: Turn | undefined;
+  playedTurns: Array<Turn>;
 
   dealer: Player;
-  trumpCaller: Player;
-  trumpSuit: CardSuit;
+  trumpCaller: Player | undefined;
+  trumpSuit: CardSuit | undefined;
   flippedCard: Card;
-  dealerSwappedCard: Card | undefined;
 };
+
+export function createRound(dealer: Player): Round {
+  const cards = deal();
+
+  return {
+    turnPlayer: playerToLeft(dealer),
+    turnAction: TurnAction.CallFlippedTrump,
+
+    hands: [cards[0], cards[1], cards[2], cards[3]],
+    currentTurn: undefined,
+    playedTurns: [],
+
+    dealer,
+    trumpCaller: undefined,
+    trumpSuit: undefined,
+    flippedCard: cards[4]
+  };
+}
