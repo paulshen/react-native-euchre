@@ -27,3 +27,22 @@ export function getPlayerTeam(player: Player): Team {
       return Team.Two;
   }
 }
+
+export function didPlayerGo(
+  player: Player,
+  lastPlayer: Player,
+  currentPlayer: Player
+): boolean {
+  const firstPlayer = playerToLeft(lastPlayer);
+  let iterPlayer = firstPlayer;
+  while (iterPlayer !== lastPlayer) {
+    if (iterPlayer === currentPlayer) {
+      return false;
+    }
+    if (iterPlayer === player) {
+      return true;
+    }
+    iterPlayer = playerToRight(iterPlayer);
+  }
+  return false;
+}

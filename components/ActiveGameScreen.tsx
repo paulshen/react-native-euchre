@@ -6,18 +6,18 @@ import ActiveRoundScreen from "./ActiveRoundScreen";
 
 export default function ActiveGameScreen({
   game,
-  playerId
+  player
 }: {
   game: Game;
-  playerId: Player;
+  player: Player;
 }) {
   if (game.currentRound) {
-    return <ActiveRoundScreen round={game.currentRound} playerId={playerId} />;
+    return <ActiveRoundScreen round={game.currentRound} player={player} />;
   }
   return (
     <View style={styles.root}>
       <Text>{JSON.stringify(game)}</Text>
-      <Text>{playerId}</Text>
+      <Text>{player}</Text>
     </View>
   );
 }

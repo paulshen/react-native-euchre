@@ -6,17 +6,17 @@ import { Player } from "../game/Player";
 export default function WaitingRoomScreen({
   gameId,
   game,
-  playerId
+  player
 }: {
   gameId: string;
   game: Game;
-  playerId: Player;
+  player: Player;
 }) {
   return (
     <View style={styles.root}>
       <Text>{gameId}</Text>
       <Text>{JSON.stringify(game)}</Text>
-      <Text>{playerId}</Text>
+      <Text>{player}</Text>
     </View>
   );
 }

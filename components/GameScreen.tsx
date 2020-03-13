@@ -9,7 +9,7 @@ import WaitingRoomScreen from "./WaitingRoomScreen";
 
 export default function GameScreen() {
   const [gameId, setGameId] = React.useState<string | null>(null);
-  const [playerId, setPlayerId] = React.useState<Player | null>(null);
+  const [player, setPlayer] = React.useState<Player | null>(null);
   const [game, setGame] = React.useState<Game | null>(null);
 
   React.useEffect(() => {
@@ -23,22 +23,20 @@ export default function GameScreen() {
   }, [gameId]);
 
   let body;
-  if (gameId === null || playerId === null) {
+  if (gameId === null || player === null) {
     body = (
       <EnterGameScreen
-        onEnter={(gameId: string, playerId: Player) => {
+        onEnter={(gameId: string, player: Player) => {
           setGameId(gameId);
-          setPlayerId(playerId);
+          setPlayer(player);
         }}
       />
     );
   } else if (game !== null) {
     if (!game.currentRound) {
-      body = (
-        <WaitingRoomScreen gameId={gameId} game={game} playerId={playerId} />
-      );
+      body = <WaitingRoomScreen gameId={gameId} game={game} player={player} />;
     } else {
-      body = <ActiveGameScreen game={game} playerId={playerId} />;
+      body = <ActiveGameScreen game={game} player={player} />;
     }
   } else {
     body = (
