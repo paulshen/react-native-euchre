@@ -42,7 +42,7 @@ export function didPlayerGo(
     if (iterPlayer === player) {
       return true;
     }
-    iterPlayer = playerToRight(iterPlayer);
+    iterPlayer = playerToLeft(iterPlayer);
   }
   return false;
 }

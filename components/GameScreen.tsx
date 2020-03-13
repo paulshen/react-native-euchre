@@ -6,6 +6,7 @@ import { Player } from "../game/Player";
 import ActiveGameScreen from "./ActiveGameScreen";
 import EnterGameScreen from "./EnterGameScreen";
 import WaitingRoomScreen from "./WaitingRoomScreen";
+import { GameIdContext } from "./ReactContext";
 
 export default function GameScreen() {
   const [gameId, setGameId] = React.useState<string | null>(null);
@@ -46,7 +47,11 @@ export default function GameScreen() {
     );
   }
 
-  return <View style={styles.root}>{body}</View>;
+  return (
+    <GameIdContext.Provider value={gameId}>
+      <View style={styles.root}>{body}</View>
+    </GameIdContext.Provider>
+  );
 }
 
 const styles = StyleSheet.create({

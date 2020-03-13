@@ -1,7 +1,15 @@
 import * as React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
+import { CardSuit } from "../game/Card";
+import {
+  callAnyTrump,
+  callFlippedTrump,
+  passAnyTrump,
+  passFlippedTrump
+} from "../game/Controller";
 import { Player } from "../game/Player";
 import { Round, TurnAction } from "../game/Round";
+import { GameIdContext } from "./ReactContext";
 
 export default function ActionView({
   round,
@@ -10,6 +18,8 @@ export default function ActionView({
   round: Round;
   player: Player;
 }) {
+  const gameId: string = React.useContext(GameIdContext)!;
+
   if (round.turnPlayer !== player) {
     return null;
   }
@@ -18,17 +28,36 @@ export default function ActionView({
     case TurnAction.CallFlippedTrump:
       return (
         <View style={styles.root}>
-          <Button title="Call" onPress={() => {}} />
-          <Button title="Pass" onPress={() => {}} />
+          <Button
+            title="Call"
+            onPress={() => callFlippedTrump(gameId, round, player)}
+          />
+          <Button
+            title="Pass"
+            onPress={() => passFlippedTrump(gameId, round, player)}
+          />
         </View>
       );
-    case TurnAction.CallFlippedTrump:
+    case TurnAction.CallAnyTrump:
+      const renderSuit = (suit: CardSuit) =>
+        round.flippedCard.suit !== suit ? (
+          <Button
+            title={CardSuit[suit]}
+            onPress={() => callAnyTrump(gameId, round, player, suit)}
+          />
+        ) : null;
       return (
         <View style={styles.root}>
-          <Button title="Club" onPress={() => {}} />
-          <Button title="Diamond" onPress={() => {}} />
-          <Button title="Heart" onPress={() => {}} />
-          <Button title="Spade" onPress={() => {}} />
+          {renderSuit(CardSuit.Club)}
+          {renderSuit(CardSuit.Diamond)}
+          {renderSuit(CardSuit.Heart)}
+          {renderSuit(CardSuit.Spade)}
+          {player !== round.dealer ? (
+            <Button
+              title="Pass"
+              onPress={() => passAnyTrump(gameId, round, player)}
+            />
+          ) : null}
         </View>
       );
     case TurnAction.DealerSwapCard:
