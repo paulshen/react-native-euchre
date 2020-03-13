@@ -41,7 +41,7 @@ export default function PlayCardTable({
     <CardTable
       round={round}
       player={player}
-      playerNames={game.players}
+      playerNames={game.playerNames}
       playerViews={{
         [Player.One]: renderCard(Player.One, round, trickWinner === Player.One),
         [Player.Two]: renderCard(Player.Two, round, trickWinner === Player.Two),

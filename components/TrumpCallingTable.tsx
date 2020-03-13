@@ -28,7 +28,7 @@ export default function TrumpCallingTable({
     <CardTable
       player={player}
       round={round}
-      playerNames={game.players}
+      playerNames={game.playerNames}
       playerViews={{
         [Player.One]: renderCallStatus(Player.One, round),
         [Player.Two]: renderCallStatus(Player.Two, round),

@@ -6,14 +6,14 @@ import { Team } from "./Team";
 // Player Two sits to left of Player One
 
 export type Game = {
-  players: [string | null, string | null, string | null, string | null];
+  playerNames?: { [player: number]: string };
   currentRound?: Round | null;
   finishedRounds?: Array<[Team, RoundOutcome]>;
 };
 
 export function createGame(): Game {
   return {
-    players: [null, null, null, null],
+    playerNames: {},
     currentRound: null,
     finishedRounds: []
   };

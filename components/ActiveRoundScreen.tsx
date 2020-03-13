@@ -26,18 +26,21 @@ function ScoreView({ game }: { game: Game }) {
     });
     return teamScores;
   }, [game.finishedRounds]);
+  if (game.playerNames === undefined) {
+    return null;
+  }
   return (
     <View style={styles.scoreView}>
       <View style={styles.scoreUnit}>
         <Text>
-          {game.players[0]} {game.players[2]}
+          {game.playerNames[0]} {game.playerNames[2]}
         </Text>
         <Text>{teamScores[Team.One]}</Text>
       </View>
       <View style={styles.scoreViewDivider} />
       <View style={styles.scoreUnit}>
         <Text>
-          {game.players[1]} {game.players[3]}
+          {game.playerNames[1]} {game.playerNames[3]}
         </Text>
         <Text>{teamScores[Team.Two]}</Text>
       </View>

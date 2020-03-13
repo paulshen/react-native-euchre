@@ -220,3 +220,11 @@ export function playCard(
     }
   }
 }
+
+export function changeName(gameId: string, player: Player, name: string) {
+  firestore()
+    .doc(`games/${gameId}`)
+    .update({
+      [`playerNames.${player}`]: name
+    });
+}

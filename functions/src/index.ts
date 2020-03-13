@@ -8,12 +8,10 @@ import {
   scoreRound
 } from "../../game/Round";
 
-function isCompletePlayers(players: Array<string | null> | undefined) {
-  return (
-    players !== undefined &&
-    players.length === 4 &&
-    players.every(p => p !== null)
-  );
+function isCompletePlayers(
+  playerNames: { [player: number]: string } | undefined
+) {
+  return playerNames !== undefined && Object.keys(playerNames).length === 4;
 }
 
 function getFirstRoundOperation(
@@ -21,10 +19,10 @@ function getFirstRoundOperation(
   after: functions.firestore.DocumentSnapshot,
   context: functions.EventContext
 ) {
-  if (before.exists && isCompletePlayers(before.data()!.players)) {
+  if (before.exists && isCompletePlayers(before.data()!.playerNames)) {
     return null;
   }
-  if (!after.exists || !isCompletePlayers(after.data()!.players)) {
+  if (!after.exists || !isCompletePlayers(after.data()!.playerNames)) {
     return null;
   }
 

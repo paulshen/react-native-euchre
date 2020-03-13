@@ -1,17 +1,17 @@
 import firestore from "@react-native-firebase/firestore";
 import * as React from "react";
-import { ActivityIndicator, StyleSheet, View, Picker } from "react-native";
+import { ActivityIndicator, Picker, StyleSheet, View } from "react-native";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
 import ActiveGameScreen from "./ActiveGameScreen";
 import EnterGameScreen from "./EnterGameScreen";
-import WaitingRoomScreen from "./WaitingRoomScreen";
 import { GameIdContext } from "./ReactContext";
+import WaitingRoomScreen from "./WaitingRoomScreen";
 
 export default function GameScreen() {
-  const [gameId, setGameId] = React.useState<string | null>(null);
-  const [player, setPlayer] = React.useState<Player | null>(null);
-  const [game, setGame] = React.useState<Game | null>(null);
+  const [gameId, setGameId] = React.useState<string | undefined>();
+  const [player, setPlayer] = React.useState<Player | undefined>();
+  const [game, setGame] = React.useState<Game | undefined>();
 
   React.useEffect(() => {
     if (gameId !== null) {
@@ -24,18 +24,24 @@ export default function GameScreen() {
   }, [gameId]);
 
   let body;
-  if (gameId === null || player === null) {
+  if (gameId === undefined) {
     body = (
       <EnterGameScreen
-        onEnter={(gameId: string, player: Player) => {
+        onEnter={(gameId: string) => {
           setGameId(gameId);
-          setPlayer(player);
         }}
       />
     );
-  } else if (game !== null) {
-    if (!game.currentRound) {
-      body = <WaitingRoomScreen gameId={gameId} game={game} player={player} />;
+  } else if (game !== undefined) {
+    if (player === undefined || !game.currentRound) {
+      body = (
+        <WaitingRoomScreen
+          gameId={gameId}
+          game={game}
+          player={player}
+          setPlayer={setPlayer}
+        />
+      );
     } else {
       body = <ActiveGameScreen game={game} player={player} />;
     }

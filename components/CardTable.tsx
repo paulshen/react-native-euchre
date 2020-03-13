@@ -12,7 +12,7 @@ export default function CardTable({
   style
 }: {
   player: Player;
-  playerNames: Array<string | null>;
+  playerNames: { [player: number]: string } | undefined;
   round: Round;
   playerViews: { [player: number]: React.ReactNode };
   centerView?: React.ReactNode;
@@ -25,7 +25,7 @@ export default function CardTable({
   function renderPlayerName(player: Player) {
     return (
       <Text style={[player === round.turnPlayer ? styles.highlightName : null]}>
-        {playerNames[player]}
+        {playerNames !== undefined ? playerNames[player] : null}
         {player === round.dealer ? " (Dealer)" : null}
         {player === round.trumpCaller && round.trumpCallerAlone
           ? " (Alone)"
