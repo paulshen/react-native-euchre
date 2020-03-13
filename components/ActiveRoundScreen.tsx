@@ -26,7 +26,7 @@ function CardView({
 }) {
   return (
     <TouchableOpacity onPress={onPress} style={style}>
-      <Text>{cardToString(card)}</Text>
+      <Text style={styles.cardView}>{cardToString(card)}</Text>
     </TouchableOpacity>
   );
 }
@@ -113,5 +113,8 @@ const styles = StyleSheet.create({
   },
   card: {
     marginRight: 8
+  },
+  cardView: {
+    fontSize: 24
   }
 });

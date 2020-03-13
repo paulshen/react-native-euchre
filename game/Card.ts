@@ -68,13 +68,13 @@ export function deal(): [
 function suitToString(suit: CardSuit): string {
   switch (suit) {
     case CardSuit.Club:
-      return "C";
+      return "♣";
     case CardSuit.Diamond:
-      return "D";
+      return "♢";
     case CardSuit.Heart:
-      return "H";
+      return "♡";
     case CardSuit.Spade:
-      return "S";
+      return "♠";
   }
 }
 
