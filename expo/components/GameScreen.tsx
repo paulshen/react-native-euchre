@@ -1,11 +1,11 @@
-import firestore from "@react-native-firebase/firestore";
+import * as firebase from "firebase";
 import * as React from "react";
 import {
   ActivityIndicator,
+  Button,
   Picker,
   StyleSheet,
-  View,
-  Button
+  View
 } from "react-native";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
@@ -20,8 +20,9 @@ export default function GameScreen() {
   const [game, setGame] = React.useState<Game | undefined>();
 
   React.useEffect(() => {
-    if (gameId !== null) {
-      return firestore()
+    if (gameId !== undefined) {
+      return firebase
+        .firestore()
         .doc(`games/${gameId}`)
         .onSnapshot(docSnapshot => {
           setGame(docSnapshot.data() as Game);

@@ -1,4 +1,4 @@
-import firestore from "@react-native-firebase/firestore";
+import * as firebase from "firebase";
 import { Card, CardSuit, doesHandHaveSuit, getEffectiveSuit } from "./Card";
 import { Game } from "./Game";
 import { getTeammate, Player, playerToLeft } from "./Player";
@@ -26,7 +26,8 @@ export function callFlippedTrump(
   ) {
     throw new Error("Not your turn!");
   }
-  firestore()
+  firebase
+    .firestore()
     .doc(`games/${gameId}`)
     .update({
       "currentRound.trumpCaller": player,
@@ -49,14 +50,16 @@ export function passFlippedTrump(gameId: string, round: Round, player: Player) {
     throw new Error("Not your turn!");
   }
   if (player === round.dealer) {
-    firestore()
+    firebase
+      .firestore()
       .doc(`games/${gameId}`)
       .update({
         "currentRound.turnPlayer": playerToLeft(player),
         "currentRound.turnAction": TurnAction.CallAnyTrump
       });
   } else {
-    firestore()
+    firebase
+      .firestore()
       .doc(`games/${gameId}`)
       .update({
         "currentRound.turnPlayer": playerToLeft(player)
@@ -78,7 +81,8 @@ export function callAnyTrump(
     throw new Error("Not your turn!");
   }
   const playerLeftOfDealer = playerToLeft(round.dealer);
-  firestore()
+  firebase
+    .firestore()
     .doc(`games/${gameId}`)
     .update({
       "currentRound.trumpCaller": player,
@@ -103,7 +107,8 @@ export function passAnyTrump(gameId: string, round: Round, player: Player) {
   if (round.dealer === player) {
     throw new Error("Stick the dealer!");
   }
-  firestore()
+  firebase
+    .firestore()
     .doc(`games/${gameId}`)
     .update({
       "currentRound.turnPlayer": playerToLeft(player)
@@ -128,7 +133,8 @@ export function dealerDiscardCard(
     throw new Error("Not your turn!");
   }
   const playerLeftOfDealer = playerToLeft(round.dealer);
-  firestore()
+  firebase
+    .firestore()
     .doc(`games/${gameId}`)
     .update({
       "currentRound.turnPlayer": skipPlayerIfAlone(
@@ -154,7 +160,8 @@ export function playCard(
 
   if (round.currentTrick === null) {
     // First card of the trick sets the suit
-    firestore()
+    firebase
+      .firestore()
       .doc(`games/${gameId}`)
       .update({
         "currentRound.turnPlayer": skipPlayerIfAlone(
@@ -192,7 +199,8 @@ export function playCard(
         (round.trumpCallerAlone ? 1 : 0) ===
       4
     ) {
-      firestore()
+      firebase
+        .firestore()
         .doc(`games/${gameId}`)
         .update({
           "currentRound.currentTrick": updatedTrick,
@@ -203,7 +211,8 @@ export function playCard(
         });
     } else {
       // In the middle of a trick (2nd or 3rd)
-      firestore()
+      firebase
+        .firestore()
         .doc(`games/${gameId}`)
         .update({
           "currentRound.turnPlayer": skipPlayerIfAlone(
@@ -222,7 +231,8 @@ export function playCard(
 }
 
 export function changeName(gameId: string, player: Player, name: string) {
-  firestore()
+  firebase
+    .firestore()
     .doc(`games/${gameId}`)
     .update({
       [`playerNames.${player}`]: name
