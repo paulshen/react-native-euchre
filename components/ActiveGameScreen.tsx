@@ -12,7 +12,13 @@ export default function ActiveGameScreen({
   player: Player;
 }) {
   if (game.currentRound) {
-    return <ActiveRoundScreen round={game.currentRound} player={player} />;
+    return (
+      <ActiveRoundScreen
+        game={game}
+        round={game.currentRound}
+        player={player}
+      />
+    );
   }
   return (
     <View style={styles.root}>

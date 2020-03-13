@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Text } from "react-native";
+import { Game } from "../game/Game";
 import { Player } from "../game/Player";
 import { Round } from "../game/Round";
 import CardTable from "./CardTable";
@@ -17,15 +18,18 @@ function renderCard(player: Player, round: Round) {
 }
 
 export default function PlayCardTable({
+  game,
   round,
   player
 }: {
+  game: Game;
   round: Round;
   player: Player;
 }) {
   return (
     <CardTable
       player={player}
+      playerNames={game.players}
       playerViews={{
         [Player.One]: renderCard(Player.One, round),
         [Player.Two]: renderCard(Player.Two, round),

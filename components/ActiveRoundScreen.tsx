@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Card } from "../game/Card";
 import { dealerDiscardCard, playCard } from "../game/Controller";
+import { Game } from "../game/Game";
 import { Player } from "../game/Player";
 import { Round, TurnAction } from "../game/Round";
 import ActionView from "./ActionView";
@@ -11,9 +12,11 @@ import { GameIdContext } from "./ReactContext";
 import TrumpCallingTable from "./TrumpCallingTable";
 
 export default function ActiveRoundScreen({
+  game,
   round,
   player
 }: {
+  game: Game;
   round: Round;
   player: Player;
 }) {
@@ -35,9 +38,9 @@ export default function ActiveRoundScreen({
   return (
     <View style={styles.root}>
       {round.turnAction === TurnAction.PlayCard ? (
-        <PlayCardTable round={round} player={player} />
+        <PlayCardTable game={game} round={round} player={player} />
       ) : (
-        <TrumpCallingTable round={round} player={player} />
+        <TrumpCallingTable game={game} round={round} player={player} />
       )}
       <ActionView round={round} player={player} />
       <Text>Your Cards</Text>

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Text } from "react-native";
+import { Game } from "../game/Game";
 import { didPlayerGo, Player } from "../game/Player";
 import { Round } from "../game/Round";
 import CardTable from "./CardTable";
@@ -15,15 +16,18 @@ function renderCallStatus(player: Player, round: Round) {
 }
 
 export default function TrumpCallingTable({
+  game,
   round,
   player
 }: {
+  game: Game;
   round: Round;
   player: Player;
 }) {
   return (
     <CardTable
       player={player}
+      playerNames={game.players}
       playerViews={{
         [Player.One]: renderCallStatus(Player.One, round),
         [Player.Two]: renderCallStatus(Player.Two, round),
