@@ -72,9 +72,9 @@ export function suitToString(suit: CardSuit): string {
     case CardSuit.Club:
       return "♣";
     case CardSuit.Diamond:
-      return "♢";
+      return "♦";
     case CardSuit.Heart:
-      return "♡";
+      return "♥";
     case CardSuit.Spade:
       return "♠";
   }

@@ -6,7 +6,7 @@ import {
   TextStyle,
   TouchableOpacity
 } from "react-native";
-import { Card, cardToString } from "../game/Card";
+import { Card, CardSuit, cardToString } from "../game/Card";
 
 export default function CardView({
   card,
@@ -19,7 +19,16 @@ export default function CardView({
 }) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.root, style]}>
-      <Text style={styles.cardText}>{cardToString(card)}</Text>
+      <Text
+        style={[
+          styles.cardText,
+          card.suit === CardSuit.Diamond || card.suit === CardSuit.Heart
+            ? styles.cardTextRed
+            : null
+        ]}
+      >
+        {cardToString(card)}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -37,5 +46,8 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: 24
+  },
+  cardTextRed: {
+    color: "#ff0000"
   }
 });
