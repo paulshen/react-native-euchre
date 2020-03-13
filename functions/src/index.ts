@@ -1,12 +1,12 @@
 import * as functions from "firebase-functions";
-import { Game } from "../../game/Game";
-import { Player, playerToLeft } from "../../game/Player";
+import { Game } from "../../expo/game/Game";
+import { Player, playerToLeft } from "../../expo/game/Player";
 import {
   createRound,
   getRoundOutcome,
   getWinnerOfTrick,
   scoreRound
-} from "../../game/Round";
+} from "../../expo/game/Round";
 
 function isCompletePlayers(
   playerNames: { [player: number]: string } | undefined
