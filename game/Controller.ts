@@ -163,52 +163,22 @@ export function playCard(
       }
     };
     if (Object.keys(updatedTrick.cards).length === 4) {
-      // The trick has ended
-      const updatedFinishedTricks = [...round.finishedTricks, updatedTrick];
-      if (updatedFinishedTricks.length === 5) {
-        const teamScores = scoreRound(updatedFinishedTricks, round.trumpSuit!);
-        const [winningTeam, roundOutcome] = getRoundOutcome(
-          teamScores,
-          round.trumpCaller!
-        );
-        const finishedRounds = [
-          ...(game.finishedRounds ?? []),
-          [winningTeam, roundOutcome]
-        ];
-        // TODO: detect game ending
-        const nextDealer = playerToLeft(round.dealer);
-        firestore()
-          .doc(`games/${gameId}`)
-          .update({
-            currentRound: createRound(nextDealer),
-            finishedRounds
-          });
-      } else {
-        firestore()
-          .doc(`games/${gameId}`)
-          .update({
-            "currentRound.turnPlayer": getWinnerOfTrick(
-              updatedTrick,
-              round.trumpSuit!
-            ),
-            "currentRound.currentTrick": null,
-            "currentRound.finishedTricks": updatedFinishedTricks,
-            [`currentRound.hands.${player}`]: removeCard(
-              round.hands[player],
-              card
-            )
-          });
-      }
+      firestore()
+        .doc(`games/${gameId}`)
+        .update({
+          "currentRound.currentTrick": updatedTrick,
+          [`currentRound.hands.${player}`]: removeCard(
+            round.hands[player],
+            card
+          )
+        });
     } else {
       // In the middle of a trick (2nd or 3rd)
       firestore()
         .doc(`games/${gameId}`)
         .update({
           "currentRound.turnPlayer": playerToLeft(player),
-          "currentRound.currentTrick": {
-            ...round.currentTrick,
-            cards: { ...round.currentTrick.cards, [player]: card }
-          },
+          "currentRound.currentTrick": updatedTrick,
           [`currentRound.hands.${player}`]: removeCard(
             round.hands[player],
             card

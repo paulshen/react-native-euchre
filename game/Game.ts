@@ -1,6 +1,5 @@
-import { Round, RoundOutcome, createRound } from "./Round";
+import { Round, RoundOutcome } from "./Round";
 import { Team } from "./Team";
-import { Player } from "./Player";
 
 // Team One: Player One + Three
 // Team Two: Player Two + Four
