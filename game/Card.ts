@@ -1,3 +1,5 @@
+import { compareArrays } from "./Utils";
+
 export enum CardSuit {
   Heart,
   Spade,
@@ -97,18 +99,6 @@ function rankToString(rank: CardRank): string {
 
 export function cardToString(card: Card): string {
   return `${rankToString(card.rank)}${suitToString(card.suit)}`;
-}
-
-function compareArrays(a1: Array<number>, a2: Array<number>): boolean {
-  for (let i = 0; i < a1.length; i++) {
-    if (a1[i] > a2[i]) {
-      return true;
-    }
-    if (a1[i] < a2[i]) {
-      return false;
-    }
-  }
-  return false;
 }
 
 function isRightBower(card: Card, trump: CardSuit) {

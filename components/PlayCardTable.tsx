@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { suitToString } from "../game/Card";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
-import { Round, getWinnerOfTrick } from "../game/Round";
+import { getWinnerOfTrick, Round } from "../game/Round";
 import CardTable from "./CardTable";
 import CardView from "./CardView";
 
@@ -37,7 +37,9 @@ export default function PlayCardTable({
   return (
     <CardTable
       player={player}
+      dealer={round.dealer}
       playerNames={game.players}
+      highlightPlayer={round.turnPlayer}
       playerViews={{
         [Player.One]: renderCard(Player.One, round, trickWinner === Player.One),
         [Player.Two]: renderCard(Player.Two, round, trickWinner === Player.Two),

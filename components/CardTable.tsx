@@ -1,69 +1,98 @@
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { Player, playerToLeft, playerToRight } from "../game/Player";
 
 export default function CardTable({
   player,
   playerNames,
+  highlightPlayer,
   playerViews,
-  centerView
+  dealer,
+  centerView,
+  style
 }: {
   player: Player;
   playerNames: Array<string | null>;
+  highlightPlayer?: Player;
   playerViews: { [player: number]: React.ReactNode };
+  dealer?: Player;
   centerView?: React.ReactNode;
+  style?: ViewStyle;
 }) {
   const leftPlayer = playerToLeft(player);
   const topPlayer = playerToLeft(leftPlayer);
   const rightPlayer = playerToRight(player);
+
+  function renderPlayerName(player: Player) {
+    return (
+      <Text style={[player === highlightPlayer ? styles.highlightName : null]}>
+        {playerNames[player]}
+        {player === dealer ? " (Dealer)" : null}
+      </Text>
+    );
+  }
+
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, style]}>
       <View style={styles.topRow}>
-        <Text>{playerNames[topPlayer]}</Text>
+        {renderPlayerName(topPlayer)}
         {playerViews[topPlayer]}
       </View>
       <View style={styles.middleRow}>
         <View style={styles.middleSide}>
-          <Text>{playerNames[leftPlayer]}</Text>
+          {renderPlayerName(leftPlayer)}
           {playerViews[leftPlayer]}
         </View>
         <View style={styles.center}>{centerView}</View>
         <View style={[styles.middleSide, styles.middleRight]}>
+          {renderPlayerName(rightPlayer)}
           {playerViews[rightPlayer]}
-          <Text>{playerNames[rightPlayer]}</Text>
         </View>
       </View>
       <View style={styles.bottomRow}>
+        {renderPlayerName(player)}
         {playerViews[player]}
-        <Text>{playerNames[player]}</Text>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  root: {},
+  root: {
+    backgroundColor: "#00c000",
+    padding: 16
+  },
   topRow: {
     alignItems: "center",
-    height: 48
+    justifyContent: "space-between",
+    height: 96
   },
   middleRow: {
     flexDirection: "row",
-    height: 48
+    height: 96
   },
   middleSide: {
     flexDirection: "row",
-    width: 64
+    alignItems: "center",
+    justifyContent: "space-between",
+    flex: 1
   },
   middleRight: {
-    justifyContent: "flex-end"
+    flexDirection: "row-reverse"
   },
   center: {
-    flex: 1,
-    alignItems: "center"
+    width: 96,
+    height: 96,
+    alignItems: "center",
+    justifyContent: "center"
   },
   bottomRow: {
     alignItems: "center",
-    height: 48
+    flexDirection: "column-reverse",
+    justifyContent: "space-between",
+    height: 96
+  },
+  highlightName: {
+    fontWeight: "700"
   }
 });

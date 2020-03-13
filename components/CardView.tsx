@@ -18,14 +18,24 @@ export default function CardView({
   style?: StyleProp<TextStyle>;
 }) {
   return (
-    <TouchableOpacity onPress={onPress} style={style}>
-      <Text style={styles.cardView}>{cardToString(card)}</Text>
+    <TouchableOpacity onPress={onPress} style={[styles.root, style]}>
+      <Text style={styles.cardText}>{cardToString(card)}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  cardView: {
+  root: {
+    backgroundColor: "#ffffff",
+    borderColor: "#666666",
+    borderRadius: 4,
+    borderWidth: 1,
+    width: 48,
+    height: 64,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  cardText: {
     fontSize: 24
   }
 });

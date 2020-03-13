@@ -77,5 +77,7 @@ export default function ActionView({
 }
 
 const styles = StyleSheet.create({
-  root: {}
+  root: {
+    alignItems: "center"
+  }
 });

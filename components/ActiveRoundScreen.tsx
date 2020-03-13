@@ -4,13 +4,13 @@ import { Card } from "../game/Card";
 import { dealerDiscardCard, playCard } from "../game/Controller";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
-import { Round, TurnAction, getPointsForOutcome } from "../game/Round";
+import { getPointsForOutcome, Round, TurnAction } from "../game/Round";
+import { Team } from "../game/Team";
 import ActionView from "./ActionView";
-import CardView from "./CardView";
+import CardList from "./CardList";
 import PlayCardTable from "./PlayCardTable";
 import { GameIdContext } from "./ReactContext";
 import TrumpCallingTable from "./TrumpCallingTable";
-import { Team } from "../game/Team";
 
 function ScoreView({ game }: { game: Game }) {
   const teamScores = React.useMemo(() => {
@@ -78,17 +78,11 @@ export default function ActiveRoundScreen({
         <TrumpCallingTable game={game} round={round} player={player} />
       )}
       <ActionView round={round} player={player} />
-      <Text>Your Cards</Text>
-      <View style={styles.cards}>
-        {playerCards.map((card: Card, i) => (
-          <CardView
-            card={card}
-            style={styles.card}
-            onPress={() => onCardSelect(card)}
-            key={i}
-          />
-        ))}
-      </View>
+      <CardList
+        cards={playerCards}
+        onCardSelect={onCardSelect}
+        style={styles.cards}
+      />
     </View>
   );
 }
@@ -99,10 +93,7 @@ const styles = StyleSheet.create({
     paddingTop: 48
   },
   cards: {
-    flexDirection: "row"
-  },
-  card: {
-    marginRight: 8
+    marginTop: 16
   },
   scoreView: {
     flexDirection: "row",
