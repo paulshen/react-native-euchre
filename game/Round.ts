@@ -4,7 +4,7 @@ import { Player, playerToLeft } from "./Player";
 export enum TurnAction {
   CallFlippedTrump,
   CallAnyTrump,
-  DealerSwapCard,
+  DealerDiscardCard,
   PlayCard
 }
 

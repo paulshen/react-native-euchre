@@ -1,19 +1,34 @@
 import * as React from "react";
-import { StyleProp, StyleSheet, Text, TextStyle, View } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View
+} from "react-native";
 import { Card, cardToString } from "../game/Card";
+import { dealerDiscardCard } from "../game/Controller";
 import { didPlayerGo, Player } from "../game/Player";
 import { Round, TurnAction } from "../game/Round";
 import ActionView from "./ActionView";
 import CardTable from "./CardTable";
+import { GameIdContext } from "./ReactContext";
 
 function CardView({
   card,
+  onPress,
   style
 }: {
   card: Card;
+  onPress?: () => void;
   style?: StyleProp<TextStyle>;
 }) {
-  return <Text style={style}>{cardToString(card)}</Text>;
+  return (
+    <TouchableOpacity onPress={onPress} style={style}>
+      <Text>{cardToString(card)}</Text>
+    </TouchableOpacity>
+  );
 }
 
 function renderCallStatus(player: Player, round: Round) {
@@ -53,7 +68,18 @@ export default function ActiveRoundScreen({
   round: Round;
   player: Player;
 }) {
+  const gameId = React.useContext(GameIdContext)!;
   const playerCards = round.hands[player];
+  const onCardSelect = (card: Card) => {
+    if (round.turnPlayer !== player) {
+      return;
+    }
+    switch (round.turnAction) {
+      case TurnAction.DealerDiscardCard:
+        dealerDiscardCard(gameId, round, player, card);
+        return;
+    }
+  };
   return (
     <View style={styles.root}>
       {round.turnAction === TurnAction.PlayCard ? (
@@ -65,7 +91,12 @@ export default function ActiveRoundScreen({
       <Text>Your Cards</Text>
       <View style={styles.cards}>
         {playerCards.map((card: Card, i) => (
-          <CardView card={card} style={styles.card} key={i} />
+          <CardView
+            card={card}
+            style={styles.card}
+            onPress={() => onCardSelect(card)}
+            key={i}
+          />
         ))}
       </View>
     </View>

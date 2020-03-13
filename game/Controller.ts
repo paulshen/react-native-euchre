@@ -1,5 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
-import { CardSuit } from "./Card";
+import { Card, CardSuit } from "./Card";
 import { Player, playerToLeft } from "./Player";
 import { Round, TurnAction } from "./Round";
 
@@ -16,7 +16,11 @@ export function callFlippedTrump(gameId: string, round: Round, player: Player) {
       "currentRound.trumpCaller": player,
       "currentRound.trumpSuit": round.flippedCard.suit,
       "currentRound.turnPlayer": round.dealer,
-      "currentRound.trunAction": TurnAction.DealerSwapCard
+      "currentRound.turnAction": TurnAction.DealerDiscardCard,
+      [`currentRound.hands.${round.dealer}`]: [
+        ...round.hands[round.dealer],
+        round.flippedCard
+      ]
     });
 }
 
@@ -32,7 +36,7 @@ export function passFlippedTrump(gameId: string, round: Round, player: Player) {
       .doc(`games/${gameId}`)
       .update({
         "currentRound.turnPlayer": playerToLeft(player),
-        "currentRound.trunAction": TurnAction.CallAnyTrump
+        "currentRound.turnAction": TurnAction.CallAnyTrump
       });
   } else {
     firestore()
@@ -61,7 +65,7 @@ export function callAnyTrump(
       "currentRound.trumpCaller": player,
       "currentRound.trumpSuit": suit,
       "currentRound.turnPlayer": playerToLeft(round.dealer),
-      "currentRound.trunAction": TurnAction.PlayCard
+      "currentRound.turnAction": TurnAction.PlayCard
     });
 }
 
@@ -79,5 +83,30 @@ export function passAnyTrump(gameId: string, round: Round, player: Player) {
     .doc(`games/${gameId}`)
     .update({
       "currentRound.turnPlayer": playerToLeft(player)
+    });
+}
+
+export function dealerDiscardCard(
+  gameId: string,
+  round: Round,
+  player: Player,
+  card: Card
+) {
+  if (
+    round.turnPlayer !== player ||
+    round.dealer !== player ||
+    round.turnAction !== TurnAction.DealerDiscardCard
+  ) {
+    throw new Error("Not your turn!");
+  }
+  firestore()
+    .doc(`games/${gameId}`)
+    .update({
+      "currentRound.turnPlayer": playerToLeft(round.dealer),
+      "currentRound.turnAction": TurnAction.PlayCard,
+      [`currentRound.hands.${player}`]: round.hands[player].filter(
+        c => c.rank !== card.rank || c.suit !== card.suit
+      ),
+      "currentRound.currentTrick": {}
     });
 }

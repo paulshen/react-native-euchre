@@ -60,7 +60,7 @@ export default function ActionView({
           ) : null}
         </View>
       );
-    case TurnAction.DealerSwapCard:
+    case TurnAction.DealerDiscardCard:
       return (
         <View style={styles.root}>
           <Text>Choose a card to discard</Text>
