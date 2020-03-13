@@ -1,6 +1,6 @@
 import firestore from "@react-native-firebase/firestore";
 import * as React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View, Picker } from "react-native";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
 import ActiveGameScreen from "./ActiveGameScreen";
@@ -21,7 +21,7 @@ export default function GameScreen() {
           setGame(docSnapshot.data() as Game);
         });
     }
-  }, [gameId, player]);
+  }, [gameId]);
 
   let body;
   if (gameId === null || player === null) {
@@ -49,7 +49,18 @@ export default function GameScreen() {
 
   return (
     <GameIdContext.Provider value={gameId}>
-      <View style={styles.root}>{body}</View>
+      <View style={styles.root}>
+        {body}
+        <Picker
+          selectedValue={player}
+          onValueChange={itemValue => setPlayer(itemValue)}
+        >
+          <Picker.Item label="Player One" value={Player.One} />
+          <Picker.Item label="Player Two" value={Player.Two} />
+          <Picker.Item label="Player Three" value={Player.Three} />
+          <Picker.Item label="Player Four" value={Player.Four} />
+        </Picker>
+      </View>
     </GameIdContext.Provider>
   );
 }
