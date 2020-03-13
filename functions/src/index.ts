@@ -53,7 +53,7 @@ function getFinishTrickOperation(
     return null;
   }
 
-  if (Object.keys(trick.cards).length === 4) {
+  if (Object.keys(trick.cards).length === (round.trumpCallerAlone ? 3 : 4)) {
     console.log("finishTrick", context.params.gameId);
 
     // The trick has ended

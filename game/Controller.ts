@@ -1,17 +1,25 @@
 import firestore from "@react-native-firebase/firestore";
 import { Card, CardSuit, doesHandHaveSuit, getEffectiveSuit } from "./Card";
 import { Game } from "./Game";
-import { Player, playerToLeft } from "./Player";
-import {
-  createRound,
-  getRoundOutcome,
-  getWinnerOfTrick,
-  Round,
-  scoreRound,
-  TurnAction
-} from "./Round";
+import { getTeammate, Player, playerToLeft } from "./Player";
+import { Round, TurnAction } from "./Round";
 
-export function callFlippedTrump(gameId: string, round: Round, player: Player) {
+function skipPlayerIfAlone(
+  player: Player,
+  trumpCaller: Player,
+  trumpCallerAlone: boolean
+): Player {
+  return getTeammate(player) === trumpCaller && trumpCallerAlone
+    ? playerToLeft(player)
+    : player;
+}
+
+export function callFlippedTrump(
+  gameId: string,
+  round: Round,
+  player: Player,
+  alone: boolean
+) {
   if (
     round.turnPlayer !== player ||
     round.turnAction !== TurnAction.CallFlippedTrump
@@ -22,6 +30,7 @@ export function callFlippedTrump(gameId: string, round: Round, player: Player) {
     .doc(`games/${gameId}`)
     .update({
       "currentRound.trumpCaller": player,
+      "currentRound.trumpCallerAlone": alone,
       "currentRound.trumpSuit": round.flippedCard.suit,
       "currentRound.turnPlayer": round.dealer,
       "currentRound.turnAction": TurnAction.DealerDiscardCard,
@@ -59,7 +68,8 @@ export function callAnyTrump(
   gameId: string,
   round: Round,
   player: Player,
-  suit: CardSuit
+  suit: CardSuit,
+  alone: boolean
 ) {
   if (
     round.turnPlayer !== player ||
@@ -67,12 +77,18 @@ export function callAnyTrump(
   ) {
     throw new Error("Not your turn!");
   }
+  const playerLeftOfDealer = playerToLeft(round.dealer);
   firestore()
     .doc(`games/${gameId}`)
     .update({
       "currentRound.trumpCaller": player,
+      "currentRound.trumpCallerAlone": alone,
       "currentRound.trumpSuit": suit,
-      "currentRound.turnPlayer": playerToLeft(round.dealer),
+      "currentRound.turnPlayer": skipPlayerIfAlone(
+        playerLeftOfDealer,
+        player,
+        alone
+      ),
       "currentRound.turnAction": TurnAction.PlayCard
     });
 }
@@ -111,10 +127,15 @@ export function dealerDiscardCard(
   ) {
     throw new Error("Not your turn!");
   }
+  const playerLeftOfDealer = playerToLeft(round.dealer);
   firestore()
     .doc(`games/${gameId}`)
     .update({
-      "currentRound.turnPlayer": playerToLeft(round.dealer),
+      "currentRound.turnPlayer": skipPlayerIfAlone(
+        playerLeftOfDealer,
+        round.trumpCaller!,
+        round.trumpCallerAlone
+      ),
       "currentRound.turnAction": TurnAction.PlayCard,
       [`currentRound.hands.${player}`]: removeCard(round.hands[player], card)
     });
@@ -136,7 +157,11 @@ export function playCard(
     firestore()
       .doc(`games/${gameId}`)
       .update({
-        "currentRound.turnPlayer": playerToLeft(player),
+        "currentRound.turnPlayer": skipPlayerIfAlone(
+          playerToLeft(player),
+          round.trumpCaller!,
+          round.trumpCallerAlone
+        ),
         "currentRound.currentTrick": {
           cards: { [player]: card },
           suit: card.suit
@@ -162,7 +187,11 @@ export function playCard(
         [player]: card
       }
     };
-    if (Object.keys(updatedTrick.cards).length === 4) {
+    if (
+      Object.keys(updatedTrick.cards).length +
+        (round.trumpCallerAlone ? 1 : 0) ===
+      4
+    ) {
       firestore()
         .doc(`games/${gameId}`)
         .update({
@@ -177,7 +206,11 @@ export function playCard(
       firestore()
         .doc(`games/${gameId}`)
         .update({
-          "currentRound.turnPlayer": playerToLeft(player),
+          "currentRound.turnPlayer": skipPlayerIfAlone(
+            playerToLeft(player),
+            round.trumpCaller!,
+            round.trumpCallerAlone
+          ),
           "currentRound.currentTrick": updatedTrick,
           [`currentRound.hands.${player}`]: removeCard(
             round.hands[player],

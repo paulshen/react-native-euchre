@@ -1,21 +1,20 @@
 import * as React from "react";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { Player, playerToLeft, playerToRight } from "../game/Player";
+import { Round } from "../game/Round";
 
 export default function CardTable({
   player,
   playerNames,
-  highlightPlayer,
+  round,
   playerViews,
-  dealer,
   centerView,
   style
 }: {
   player: Player;
   playerNames: Array<string | null>;
-  highlightPlayer?: Player;
+  round: Round;
   playerViews: { [player: number]: React.ReactNode };
-  dealer?: Player;
   centerView?: React.ReactNode;
   style?: ViewStyle;
 }) {
@@ -25,9 +24,12 @@ export default function CardTable({
 
   function renderPlayerName(player: Player) {
     return (
-      <Text style={[player === highlightPlayer ? styles.highlightName : null]}>
+      <Text style={[player === round.turnPlayer ? styles.highlightName : null]}>
         {playerNames[player]}
-        {player === dealer ? " (Dealer)" : null}
+        {player === round.dealer ? " (Dealer)" : null}
+        {player === round.trumpCaller && round.trumpCallerAlone
+          ? " (Alone)"
+          : null}
       </Text>
     );
   }

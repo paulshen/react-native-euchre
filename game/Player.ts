@@ -46,3 +46,16 @@ export function didPlayerGo(
   }
   return false;
 }
+
+export function getTeammate(player: Player): Player {
+  switch (player) {
+    case Player.One:
+      return Player.Three;
+    case Player.Two:
+      return Player.Four;
+    case Player.Three:
+      return Player.One;
+    case Player.Four:
+      return Player.Two;
+  }
+}

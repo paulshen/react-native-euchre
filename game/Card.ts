@@ -118,11 +118,17 @@ function isLeftBower(card: Card, trump: CardSuit) {
 }
 
 export function isCardGreater(
-  card1: Card,
-  card2: Card,
+  card1: Card | undefined,
+  card2: Card | undefined,
   suit: CardSuit,
   trump: CardSuit
 ): boolean {
+  if (card1 === undefined) {
+    return false;
+  }
+  if (card2 === undefined) {
+    return true;
+  }
   const card1Values = [
     isRightBower(card1, trump)
       ? 5

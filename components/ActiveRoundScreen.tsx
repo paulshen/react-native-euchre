@@ -77,12 +77,12 @@ export default function ActiveRoundScreen({
       ) : (
         <TrumpCallingTable game={game} round={round} player={player} />
       )}
-      <ActionView round={round} player={player} />
       <CardList
         cards={playerCards}
         onCardSelect={onCardSelect}
         style={styles.cards}
       />
+      <ActionView round={round} player={player} />
     </View>
   );
 }

@@ -29,6 +29,7 @@ export type Round = {
 
   dealer: Player;
   trumpCaller: Player | null;
+  trumpCallerAlone: boolean;
   trumpSuit: CardSuit | null;
   flippedCard: Card;
 };
@@ -51,6 +52,7 @@ export function createRound(dealer: Player): Round {
 
     dealer,
     trumpCaller: null,
+    trumpCallerAlone: false,
     trumpSuit: null,
     flippedCard: cards[4]
   };

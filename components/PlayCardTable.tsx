@@ -30,16 +30,18 @@ export default function PlayCardTable({
   const currentTrick = round.currentTrick;
   let trickWinner;
   if (currentTrick !== null) {
-    if (Object.keys(currentTrick.cards).length === 4) {
+    if (
+      Object.keys(currentTrick.cards).length ===
+      (round.trumpCallerAlone ? 3 : 4)
+    ) {
       trickWinner = getWinnerOfTrick(currentTrick, round.trumpSuit!);
     }
   }
   return (
     <CardTable
+      round={round}
       player={player}
-      dealer={round.dealer}
       playerNames={game.players}
-      highlightPlayer={round.turnPlayer}
       playerViews={{
         [Player.One]: renderCard(Player.One, round, trickWinner === Player.One),
         [Player.Two]: renderCard(Player.Two, round, trickWinner === Player.Two),
