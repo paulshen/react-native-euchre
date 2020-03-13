@@ -1,65 +1,14 @@
 import * as React from "react";
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  View
-} from "react-native";
-import { Card, cardToString } from "../game/Card";
-import { dealerDiscardCard } from "../game/Controller";
-import { didPlayerGo, Player } from "../game/Player";
+import { StyleSheet, Text, View } from "react-native";
+import { Card } from "../game/Card";
+import { dealerDiscardCard, playCard } from "../game/Controller";
+import { Player } from "../game/Player";
 import { Round, TurnAction } from "../game/Round";
 import ActionView from "./ActionView";
-import CardTable from "./CardTable";
+import CardView from "./CardView";
+import PlayCardTable from "./PlayCardTable";
 import { GameIdContext } from "./ReactContext";
-
-function CardView({
-  card,
-  onPress,
-  style
-}: {
-  card: Card;
-  onPress?: () => void;
-  style?: StyleProp<TextStyle>;
-}) {
-  return (
-    <TouchableOpacity onPress={onPress} style={style}>
-      <Text style={styles.cardView}>{cardToString(card)}</Text>
-    </TouchableOpacity>
-  );
-}
-
-function renderCallStatus(player: Player, round: Round) {
-  if (player === round.turnPlayer) {
-    return <Text>Waiting</Text>;
-  }
-  return didPlayerGo(player, round.dealer, round.turnPlayer) ? (
-    <Text>Pass</Text>
-  ) : null;
-}
-
-function TrumpCallingTable({
-  round,
-  player
-}: {
-  round: Round;
-  player: Player;
-}) {
-  return (
-    <CardTable
-      player={player}
-      playerViews={{
-        [Player.One]: renderCallStatus(Player.One, round),
-        [Player.Two]: renderCallStatus(Player.Two, round),
-        [Player.Three]: renderCallStatus(Player.Three, round),
-        [Player.Four]: renderCallStatus(Player.Four, round)
-      }}
-      centerView={<CardView card={round.flippedCard} />}
-    />
-  );
-}
+import TrumpCallingTable from "./TrumpCallingTable";
 
 export default function ActiveRoundScreen({
   round,
@@ -78,12 +27,15 @@ export default function ActiveRoundScreen({
       case TurnAction.DealerDiscardCard:
         dealerDiscardCard(gameId, round, player, card);
         return;
+      case TurnAction.PlayCard:
+        playCard(gameId, round, player, card);
+        return;
     }
   };
   return (
     <View style={styles.root}>
       {round.turnAction === TurnAction.PlayCard ? (
-        <View />
+        <PlayCardTable round={round} player={player} />
       ) : (
         <TrumpCallingTable round={round} player={player} />
       )}
@@ -113,8 +65,5 @@ const styles = StyleSheet.create({
   },
   card: {
     marginRight: 8
-  },
-  cardView: {
-    fontSize: 24
   }
 });

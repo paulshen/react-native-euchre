@@ -21,7 +21,7 @@ export default function GameScreen() {
           setGame(docSnapshot.data() as Game);
         });
     }
-  }, [gameId]);
+  }, [gameId, player]);
 
   let body;
   if (gameId === null || player === null) {

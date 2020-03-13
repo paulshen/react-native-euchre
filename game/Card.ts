@@ -98,3 +98,64 @@ function rankToString(rank: CardRank): string {
 export function cardToString(card: Card): string {
   return `${rankToString(card.rank)}${suitToString(card.suit)}`;
 }
+
+function compareArrays(a1: Array<number>, a2: Array<number>): boolean {
+  for (let i = 0; i < a1.length; i++) {
+    if (a1[i] > a2[i]) {
+      return true;
+    }
+    if (a1[i] < a2[i]) {
+      return false;
+    }
+  }
+  return false;
+}
+
+function isRightBower(card: Card, trump: CardSuit) {
+  return card.suit === trump && card.rank === CardRank.Jack;
+}
+
+function isLeftBower(card: Card, trump: CardSuit) {
+  if (card.rank !== CardRank.Jack) {
+    return false;
+  }
+  return (
+    (card.suit === CardSuit.Club && trump === CardSuit.Spade) ||
+    (card.suit === CardSuit.Spade && trump === CardSuit.Club) ||
+    (card.suit === CardSuit.Heart && trump === CardSuit.Diamond) ||
+    (card.suit === CardSuit.Diamond && trump === CardSuit.Heart)
+  );
+}
+
+export function isCardGreater(
+  card1: Card,
+  card2: Card,
+  suit: CardSuit,
+  trump: CardSuit
+): boolean {
+  const card1Values = [
+    isRightBower(card1, trump)
+      ? 5
+      : isLeftBower(card1, trump)
+      ? 4
+      : card1.suit === trump
+      ? 3
+      : card1.suit === suit
+      ? 2
+      : 1,
+    card1.rank
+  ];
+  const card2Values = [
+    isRightBower(card2, trump)
+      ? 5
+      : isLeftBower(card2, trump)
+      ? 4
+      : card2.suit === trump
+      ? 3
+      : card2.suit === suit
+      ? 2
+      : 1,
+    card2.rank
+  ];
+  return compareArrays(card1Values, card2Values);
+}

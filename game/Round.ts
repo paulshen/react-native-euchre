@@ -1,4 +1,4 @@
-import { Card, CardSuit, deal } from "./Card";
+import { Card, CardSuit, deal, isCardGreater } from "./Card";
 import { Player, playerToLeft } from "./Player";
 
 export enum TurnAction {
@@ -16,7 +16,7 @@ export enum RoundOutcome {
   Alone5
 }
 
-export type Trick = { [player: number]: Card };
+export type Trick = { cards: { [player: number]: Card }; suit: CardSuit };
 
 export type Round = {
   turnPlayer: Player;
@@ -53,4 +53,16 @@ export function createRound(dealer: Player): Round {
     trumpSuit: null,
     flippedCard: cards[4]
   };
+}
+
+export function getWinnerOfTrick(trick: Trick, trumpSuit: CardSuit): Player {
+  let winner = Player.One;
+  for (let i = Player.Two; i <= Player.Four; i++) {
+    if (
+      isCardGreater(trick.cards[i], trick.cards[winner], trick.suit, trumpSuit)
+    ) {
+      winner = i;
+    }
+  }
+  return winner;
 }

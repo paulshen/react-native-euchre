@@ -1,7 +1,7 @@
 import firestore from "@react-native-firebase/firestore";
-import { Card, CardSuit } from "./Card";
+import { Card, CardSuit, isCardGreater } from "./Card";
 import { Player, playerToLeft } from "./Player";
-import { Round, TurnAction } from "./Round";
+import { Round, TurnAction, getWinnerOfTrick } from "./Round";
 
 export function callFlippedTrump(gameId: string, round: Round, player: Player) {
   if (
@@ -86,6 +86,10 @@ export function passAnyTrump(gameId: string, round: Round, player: Player) {
     });
 }
 
+function removeCard(hand: Array<Card>, card: Card): Array<Card> {
+  return hand.filter(c => c.rank !== card.rank || c.suit !== card.suit);
+}
+
 export function dealerDiscardCard(
   gameId: string,
   round: Round,
@@ -104,9 +108,76 @@ export function dealerDiscardCard(
     .update({
       "currentRound.turnPlayer": playerToLeft(round.dealer),
       "currentRound.turnAction": TurnAction.PlayCard,
-      [`currentRound.hands.${player}`]: round.hands[player].filter(
-        c => c.rank !== card.rank || c.suit !== card.suit
-      ),
-      "currentRound.currentTrick": {}
+      [`currentRound.hands.${player}`]: removeCard(round.hands[player], card)
     });
+}
+
+export function playCard(
+  gameId: string,
+  round: Round,
+  player: Player,
+  card: Card
+) {
+  if (round.turnPlayer !== player || round.turnAction !== TurnAction.PlayCard) {
+    throw new Error("Not your turn!");
+  }
+
+  if (round.currentTrick === null) {
+    // First card of the trick sets the suit
+    firestore()
+      .doc(`games/${gameId}`)
+      .update({
+        "currentRound.turnPlayer": playerToLeft(player),
+        "currentRound.currentTrick": {
+          cards: { [player]: card },
+          suit: card.suit
+        },
+        [`currentRound.hands.${player}`]: removeCard(round.hands[player], card)
+      });
+  } else {
+    const updatedTrick = {
+      ...round.currentTrick,
+      cards: {
+        ...round.currentTrick.cards,
+        [player]: card
+      }
+    };
+    if (Object.keys(updatedTrick.cards).length === 4) {
+      // The trick has ended
+      const updatedFinishedTricks = [...round.finishedTricks, updatedTrick];
+      if (updatedFinishedTricks.length === 5) {
+        // TODO: round ended
+      } else {
+        firestore()
+          .doc(`games/${gameId}`)
+          .update({
+            "currentRound.turnPlayer": getWinnerOfTrick(
+              updatedTrick,
+              round.trumpSuit!
+            ),
+            "currentRound.currentTrick": null,
+            "currentRound.finishedTricks": updatedFinishedTricks,
+            [`currentRound.hands.${player}`]: removeCard(
+              round.hands[player],
+              card
+            )
+          });
+      }
+    } else {
+      // In the middle of a trick (2nd or 3rd)
+      firestore()
+        .doc(`games/${gameId}`)
+        .update({
+          "currentRound.turnPlayer": playerToLeft(player),
+          "currentRound.currentTrick": {
+            ...round.currentTrick,
+            cards: { ...round.currentTrick.cards, [player]: card }
+          },
+          [`currentRound.hands.${player}`]: removeCard(
+            round.hands[player],
+            card
+          )
+        });
+    }
+  }
 }
