@@ -102,3 +102,18 @@ export function getRoundOutcome(
   }
   return [winningTeam, outcome];
 }
+
+export function getPointsForOutcome(outcome: RoundOutcome): number {
+  switch (outcome) {
+    case RoundOutcome.Alone5:
+      return 5;
+    case RoundOutcome.Win5:
+      return 2;
+    case RoundOutcome.Win34:
+      return 1;
+    case RoundOutcome.Defend34:
+      return 2;
+    case RoundOutcome.Defend5:
+      return 4;
+  }
+}
