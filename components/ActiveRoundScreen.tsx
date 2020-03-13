@@ -32,17 +32,19 @@ function ScoreView({ game }: { game: Game }) {
   return (
     <View style={styles.scoreView}>
       <View style={styles.scoreUnit}>
-        <Text>
-          {game.playerNames[0]} {game.playerNames[2]}
-        </Text>
-        <Text>{teamScores[Team.One]}</Text>
+        <View>
+          <Text>{game.playerNames[0]}</Text>
+          <Text>{game.playerNames[2]}</Text>
+        </View>
+        <Text style={styles.scoreText}>{teamScores[Team.One]}</Text>
       </View>
       <View style={styles.scoreViewDivider} />
       <View style={styles.scoreUnit}>
-        <Text>
-          {game.playerNames[1]} {game.playerNames[3]}
-        </Text>
-        <Text>{teamScores[Team.Two]}</Text>
+        <Text style={styles.scoreText}>{teamScores[Team.Two]}</Text>
+        <View style={styles.scoreNamesRight}>
+          <Text>{game.playerNames[1]}</Text>
+          <Text>{game.playerNames[3]}</Text>
+        </View>
       </View>
     </View>
   );
@@ -100,12 +102,22 @@ const styles = StyleSheet.create({
   },
   scoreView: {
     flexDirection: "row",
-    justifyContent: "center"
+    paddingHorizontal: 16,
+    paddingVertical: 16
   },
   scoreViewDivider: {
-    width: 8
+    width: 16
   },
   scoreUnit: {
-    alignItems: "center"
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  scoreNamesRight: {
+    alignItems: "flex-end"
+  },
+  scoreText: {
+    fontSize: 20
   }
 });
