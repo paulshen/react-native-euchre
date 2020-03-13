@@ -1,5 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
-import { Card, CardSuit } from "./Card";
+import { Card, CardSuit, doesHandHaveSuit, getEffectiveSuit } from "./Card";
 import { Game } from "./Game";
 import { Player, playerToLeft } from "./Player";
 import {
@@ -144,6 +144,17 @@ export function playCard(
         [`currentRound.hands.${player}`]: removeCard(round.hands[player], card)
       });
   } else {
+    if (
+      getEffectiveSuit(card, round.trumpSuit!) !== round.currentTrick.suit &&
+      doesHandHaveSuit(
+        round.hands[player],
+        round.currentTrick.suit,
+        round.trumpSuit!
+      )
+    ) {
+      // There is another card the player can play
+      return false;
+    }
     const updatedTrick = {
       ...round.currentTrick,
       cards: {

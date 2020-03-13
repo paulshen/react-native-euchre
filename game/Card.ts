@@ -159,3 +159,30 @@ export function isCardGreater(
   ];
   return compareArrays(card1Values, card2Values);
 }
+
+export function getEffectiveSuit(card: Card, trumpSuit: CardSuit) {
+  if (card.rank !== CardRank.Jack) {
+    return card.suit;
+  }
+  if (card.suit === CardSuit.Club && trumpSuit === CardSuit.Spade) {
+    return CardSuit.Spade;
+  }
+  if (card.suit === CardSuit.Spade && trumpSuit === CardSuit.Club) {
+    return CardSuit.Club;
+  }
+  if (card.suit === CardSuit.Heart && trumpSuit === CardSuit.Diamond) {
+    return CardSuit.Diamond;
+  }
+  if (card.suit === CardSuit.Diamond && trumpSuit === CardSuit.Heart) {
+    return CardSuit.Heart;
+  }
+  return card.suit;
+}
+
+export function doesHandHaveSuit(
+  hand: Array<Card>,
+  suit: CardSuit,
+  trumpSuit: CardSuit
+) {
+  return hand.some(card => getEffectiveSuit(card, trumpSuit) === suit);
+}
