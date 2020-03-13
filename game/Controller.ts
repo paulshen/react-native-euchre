@@ -1,7 +1,15 @@
 import firestore from "@react-native-firebase/firestore";
-import { Card, CardSuit, isCardGreater } from "./Card";
+import { Card, CardSuit } from "./Card";
+import { Game } from "./Game";
 import { Player, playerToLeft } from "./Player";
-import { Round, TurnAction, getWinnerOfTrick } from "./Round";
+import {
+  createRound,
+  getRoundOutcome,
+  getWinnerOfTrick,
+  Round,
+  scoreRound,
+  TurnAction
+} from "./Round";
 
 export function callFlippedTrump(gameId: string, round: Round, player: Player) {
   if (
@@ -114,6 +122,7 @@ export function dealerDiscardCard(
 
 export function playCard(
   gameId: string,
+  game: Game,
   round: Round,
   player: Player,
   card: Card
@@ -146,7 +155,23 @@ export function playCard(
       // The trick has ended
       const updatedFinishedTricks = [...round.finishedTricks, updatedTrick];
       if (updatedFinishedTricks.length === 5) {
-        // TODO: round ended
+        const teamScores = scoreRound(updatedFinishedTricks, round.trumpSuit!);
+        const [winningTeam, roundOutcome] = getRoundOutcome(
+          teamScores,
+          round.trumpCaller!
+        );
+        const finishedRounds = [
+          ...(game.finishedRounds ?? []),
+          [winningTeam, roundOutcome]
+        ];
+        // TODO: detect game ending
+        const nextDealer = playerToLeft(round.dealer);
+        firestore()
+          .doc(`games/${gameId}`)
+          .update({
+            currentRound: createRound(nextDealer),
+            finishedRounds
+          });
       } else {
         firestore()
           .doc(`games/${gameId}`)

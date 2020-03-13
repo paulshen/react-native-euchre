@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Text } from "react-native";
+import { suitToString } from "../game/Card";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
 import { Round } from "../game/Round";
@@ -36,6 +37,7 @@ export default function PlayCardTable({
         [Player.Three]: renderCard(Player.Three, round),
         [Player.Four]: renderCard(Player.Four, round)
       }}
+      centerView={<Text>{suitToString(round.trumpSuit!)}</Text>}
     />
   );
 }

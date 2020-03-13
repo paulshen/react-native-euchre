@@ -1,5 +1,6 @@
 import { Card, CardSuit, deal, isCardGreater } from "./Card";
-import { Player, playerToLeft } from "./Player";
+import { Player, playerToLeft, getPlayerTeam } from "./Player";
+import { Team } from "./Team";
 
 export enum TurnAction {
   CallFlippedTrump,
@@ -65,4 +66,39 @@ export function getWinnerOfTrick(trick: Trick, trumpSuit: CardSuit): Player {
     }
   }
   return winner;
+}
+
+export function scoreRound(
+  tricks: Array<Trick>,
+  trumpSuit: CardSuit
+): { [team: number]: number } {
+  const trickWinners = tricks.map(trick => getWinnerOfTrick(trick, trumpSuit));
+  const teamScores = {
+    [Team.One]: 0,
+    [Team.Two]: 0
+  };
+  trickWinners.forEach(trickWinner => {
+    const team = getPlayerTeam(trickWinner);
+    teamScores[team]++;
+  });
+  return teamScores;
+}
+
+export function getRoundOutcome(
+  teamScores: {
+    [team: number]: number;
+  },
+  trumpCaller: Player
+): [Team, number] {
+  const winningTeam =
+    teamScores[Team.One] > teamScores[Team.Two] ? Team.One : Team.Two;
+  const didWinAll = teamScores[winningTeam] === 5;
+  const didCallTrump = getPlayerTeam(trumpCaller) === winningTeam;
+  let outcome;
+  if (didCallTrump) {
+    outcome = didWinAll ? RoundOutcome.Win5 : RoundOutcome.Win34;
+  } else {
+    outcome = didWinAll ? RoundOutcome.Defend5 : RoundOutcome.Defend34;
+  }
+  return [winningTeam, outcome];
 }

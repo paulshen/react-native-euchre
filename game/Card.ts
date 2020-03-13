@@ -65,7 +65,7 @@ export function deal(): [
   ];
 }
 
-function suitToString(suit: CardSuit): string {
+export function suitToString(suit: CardSuit): string {
   switch (suit) {
     case CardSuit.Club:
       return "♣";

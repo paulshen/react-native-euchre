@@ -31,7 +31,7 @@ export default function ActiveRoundScreen({
         dealerDiscardCard(gameId, round, player, card);
         return;
       case TurnAction.PlayCard:
-        playCard(gameId, round, player, card);
+        playCard(gameId, game, round, player, card);
         return;
     }
   };
