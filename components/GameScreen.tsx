@@ -1,6 +1,12 @@
 import firestore from "@react-native-firebase/firestore";
 import * as React from "react";
-import { ActivityIndicator, Picker, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Picker,
+  StyleSheet,
+  View,
+  Button
+} from "react-native";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
 import ActiveGameScreen from "./ActiveGameScreen";
@@ -57,6 +63,13 @@ export default function GameScreen() {
     <GameIdContext.Provider value={gameId}>
       <View style={styles.root}>
         {body}
+        <Button
+          title="Leave Game"
+          onPress={() => {
+            setGameId(undefined);
+            setPlayer(undefined);
+          }}
+        />
         <Picker
           selectedValue={player}
           onValueChange={itemValue => setPlayer(itemValue)}
