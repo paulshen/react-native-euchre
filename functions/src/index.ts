@@ -65,7 +65,7 @@ function getFinishTrickOperation(
       );
       const finishedRounds = [
         ...(game.finishedRounds ?? []),
-        [winningTeam, roundOutcome]
+        { team: winningTeam, outcome: roundOutcome }
       ];
       const nextDealer = playerToLeft(round.dealer);
       return new Promise((resolve, reject) => {
@@ -76,7 +76,7 @@ function getFinishTrickOperation(
               finishedRounds
             })
             .then(resolve, reject);
-        }, 3000);
+        }, 2000);
       });
     } else {
       return new Promise((resolve, reject) => {
@@ -91,7 +91,7 @@ function getFinishTrickOperation(
               "currentRound.finishedTricks": updatedFinishedTricks
             })
             .then(resolve, reject);
-        }, 3000);
+        }, 2000);
       });
     }
   }

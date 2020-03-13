@@ -8,7 +8,7 @@ import { Team } from "./Team";
 export type Game = {
   playerNames?: { [player: number]: string };
   currentRound?: Round | null;
-  finishedRounds?: Array<[Team, RoundOutcome]>;
+  finishedRounds?: Array<{ team: Team; outcome: RoundOutcome }>;
 };
 
 export function createGame(): Game {

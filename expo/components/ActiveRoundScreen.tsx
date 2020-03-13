@@ -21,7 +21,7 @@ function ScoreView({ game }: { game: Game }) {
     if (!game.finishedRounds) {
       return teamScores;
     }
-    game.finishedRounds.forEach(([team, outcome]) => {
+    game.finishedRounds.forEach(({ team, outcome }) => {
       teamScores[team] += getPointsForOutcome(outcome);
     });
     return teamScores;
