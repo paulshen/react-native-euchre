@@ -25,13 +25,13 @@ export default function EnterGameScreen({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingTop: 128
+    paddingTop: 128,
+    marginHorizontal: 16
   },
   gameInput: {
     borderColor: "gray",
     borderRadius: 4,
     borderWidth: 1,
-    marginHorizontal: 16,
     marginBottom: 16,
     paddingHorizontal: 8,
     height: 48

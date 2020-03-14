@@ -112,8 +112,9 @@ export default function GameScreen() {
               setGameId(undefined);
               setPlayer(undefined);
             }}
+            style={styles.leaveButton}
           >
-            <Ionicons name="md-exit" size={32} style={styles.leaveButton} />
+            <Ionicons name="md-exit" size={32} />
           </TouchableOpacity>
         ) : null}
       </View>
