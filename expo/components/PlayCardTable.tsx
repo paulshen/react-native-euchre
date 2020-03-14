@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
   highlight: {
     shadowOpacity: 0.5,
     shadowRadius: 4,
-    shadowOffset: { width: 0, height: 0 }
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 10
   },
   trumpSuit: {
     fontSize: 24
