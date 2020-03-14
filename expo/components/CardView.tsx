@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from "react-native";
 import { Card, CardSuit, cardToString, suitToString } from "../game/Card";
 
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   cardText: {
-    fontSize: 22
+    fontSize: Platform.OS === "android" ? 18 : 22
   },
   cardTextRed: {
     color: "#ff0000"

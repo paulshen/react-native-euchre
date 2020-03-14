@@ -1,6 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { suitToString } from "../game/Card";
+import { StyleSheet, Text } from "react-native";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
 import { getWinnerOfTrick, Round } from "../game/Round";
@@ -13,7 +12,7 @@ function renderCard(player: Player, round: Round, highlight: boolean) {
     return <CardView card={card} style={highlight ? styles.highlight : null} />;
   }
   if (round.turnPlayer === player) {
-    return <Text>Turn</Text>;
+    return <Text>Waiting</Text>;
   }
   return null;
 }
@@ -65,7 +64,9 @@ export default function PlayCardTable({
 
 const styles = StyleSheet.create({
   highlight: {
-    backgroundColor: "#f0f0f0"
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 0 }
   },
   trumpSuit: {
     fontSize: 24
