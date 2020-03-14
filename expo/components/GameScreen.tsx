@@ -56,7 +56,16 @@ export default function GameScreen() {
         .firestore()
         .doc(`games/${gameId}`)
         .onSnapshot(docSnapshot => {
-          setGame(docSnapshot.data() as Game);
+          const game = docSnapshot.data() as Game | undefined;
+          setGame(game);
+          if (!docSnapshot.exists) {
+            firebase
+              .firestore()
+              .doc(`games/${gameId}`)
+              .set({
+                playerNames: {}
+              });
+          }
         });
     }
   }, [gameId]);
