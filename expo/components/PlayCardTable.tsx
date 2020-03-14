@@ -1,11 +1,11 @@
 import * as React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { suitToString } from "../game/Card";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
 import { getWinnerOfTrick, Round } from "../game/Round";
 import CardTable from "./CardTable";
-import CardView from "./CardView";
+import CardView, { CardSuitText } from "./CardView";
 
 function renderCard(player: Player, round: Round, highlight: boolean) {
   const card = round.currentTrick?.cards[player];
@@ -56,7 +56,9 @@ export default function PlayCardTable({
           trickWinner === Player.Four
         )
       }}
-      centerView={<Text>{suitToString(round.trumpSuit!)}</Text>}
+      centerView={
+        <CardSuitText suit={round.trumpSuit!} style={styles.trumpSuit} />
+      }
     />
   );
 }
@@ -64,5 +66,8 @@ export default function PlayCardTable({
 const styles = StyleSheet.create({
   highlight: {
     backgroundColor: "#f0f0f0"
+  },
+  trumpSuit: {
+    fontSize: 24
   }
 });
