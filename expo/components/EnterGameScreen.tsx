@@ -13,6 +13,8 @@ export default function EnterGameScreen({
       <TextInput
         value={gameId}
         onChangeText={setGameId}
+        placeholder="Game ID"
+        autoCapitalize="none"
         style={styles.gameInput}
       />
       <Button title="Enter" onPress={() => onEnter(gameId)} />
@@ -23,11 +25,15 @@ export default function EnterGameScreen({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingTop: 48
+    paddingTop: 128
   },
   gameInput: {
     borderColor: "gray",
+    borderRadius: 4,
     borderWidth: 1,
-    height: 40
+    marginHorizontal: 16,
+    marginBottom: 16,
+    paddingHorizontal: 8,
+    height: 48
   }
 });

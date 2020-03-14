@@ -1,8 +1,8 @@
+import { Ionicons } from "@expo/vector-icons";
 import * as firebase from "firebase";
 import * as React from "react";
 import {
   ActivityIndicator,
-  Button,
   Picker,
   StyleSheet,
   TouchableOpacity,
@@ -100,6 +100,16 @@ export default function GameScreen() {
             setPlayer={setPlayer}
           />
         ) : null}
+        {gameId !== undefined ? (
+          <TouchableOpacity
+            onPress={() => {
+              setGameId(undefined);
+              setPlayer(undefined);
+            }}
+          >
+            <Ionicons name="md-exit" size={32} style={styles.leaveButton} />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </GameIdContext.Provider>
   );
@@ -123,5 +133,10 @@ const styles = StyleSheet.create({
   },
   playerSwitcher: {
     backgroundColor: "#ffffff"
+  },
+  leaveButton: {
+    position: "absolute",
+    bottom: 16,
+    left: 16
   }
 });
