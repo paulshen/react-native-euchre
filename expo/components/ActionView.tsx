@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle
-} from "react-native";
+import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import { CardSuitText } from "../components/CardView";
 import { CardSuit } from "../game/Card";
 import {
@@ -17,33 +10,8 @@ import {
 } from "../game/Controller";
 import { Player } from "../game/Player";
 import { Round, TurnAction } from "../game/Round";
+import CustomButton from "./CustomButton";
 import { GameIdContext } from "./ReactContext";
-
-function CustomButton({
-  label,
-  onPress,
-  disabled,
-  style
-}: {
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-  style?: ViewStyle;
-}) {
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      disabled={disabled}
-      style={[
-        styles.customButton,
-        disabled === true ? styles.customButtonDisabled : null,
-        style
-      ]}
-    >
-      <Text style={styles.customButtonText}>{label}</Text>
-    </TouchableOpacity>
-  );
-}
 
 function CallFlippedTrumpView({
   gameId,
@@ -65,11 +33,13 @@ function CallFlippedTrumpView({
         <CustomButton
           label="Call"
           onPress={() => callFlippedTrump(gameId, round, player, alone)}
+          style={styles.callButton}
         />
         <View style={styles.submitRowSpacer} />
         <CustomButton
           label="Pass"
           onPress={() => passFlippedTrump(gameId, round, player)}
+          style={styles.callButton}
         />
       </View>
     </View>
@@ -109,27 +79,31 @@ function CallAnyTrumpView({
     ) : null;
   return (
     <View style={styles.root}>
-      <View style={styles.chooseSuitRow}>
-        {renderSuit(CardSuit.Club)}
-        {renderSuit(CardSuit.Diamond)}
-        {renderSuit(CardSuit.Heart)}
-        {renderSuit(CardSuit.Spade)}
-      </View>
-      <View style={styles.aloneRow}>
-        <Text style={styles.aloneRowLabel}>Alone?</Text>
-        <Switch value={alone} onValueChange={setAlone} />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={styles.chooseSuitRow}>
+          {renderSuit(CardSuit.Club)}
+          {renderSuit(CardSuit.Diamond)}
+          {renderSuit(CardSuit.Heart)}
+          {renderSuit(CardSuit.Spade)}
+        </View>
+        <View style={styles.aloneRow}>
+          <Text style={styles.aloneRowLabel}>Alone?</Text>
+          <Switch value={alone} onValueChange={setAlone} />
+        </View>
       </View>
       <View style={styles.submitRow}>
         <CustomButton
           label="Call"
           disabled={chosenSuit === undefined}
           onPress={() => callAnyTrump(gameId, round, player, chosenSuit, alone)}
+          style={styles.callButton}
         />
         <View style={styles.submitRowSpacer} />
         <CustomButton
           disabled={player === round.dealer}
           label="Pass"
           onPress={() => passAnyTrump(gameId, round, player)}
+          style={styles.callButton}
         />
       </View>
     </View>
@@ -182,7 +156,7 @@ export default function ActionView({
 const styles = StyleSheet.create({
   root: {
     alignItems: "center",
-    paddingTop: 32
+    paddingTop: 16
   },
   submitRow: {
     flexDirection: "row",
@@ -202,20 +176,6 @@ const styles = StyleSheet.create({
   submitRowSpacer: {
     width: 16
   },
-  customButton: {
-    borderColor: "#e0e0e0",
-    borderWidth: 1,
-    borderRadius: 8,
-    alignItems: "center",
-    paddingVertical: 16,
-    flex: 1
-  },
-  customButtonText: {
-    fontSize: 16
-  },
-  customButtonDisabled: {
-    opacity: 0.3
-  },
   chooseSuitRow: {
     flexDirection: "row",
     paddingHorizontal: 16
@@ -232,5 +192,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     opacity: 0.5
   },
-  suitButtonTextSelected: { opacity: 1 }
+  suitButtonTextSelected: { opacity: 1 },
+  callButton: { flex: 1 }
 });

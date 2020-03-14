@@ -22,37 +22,50 @@ export default function CardTable({
   const topPlayer = playerToLeft(leftPlayer);
   const rightPlayer = playerToRight(player);
 
-  function renderPlayerName(player: Player) {
+  function renderPlayerName(player: Player, horizontal: boolean) {
     return (
-      <Text style={[player === round.turnPlayer ? styles.highlightName : null]}>
-        {playerNames !== undefined ? playerNames[player] : null}
-        {player === round.dealer ? " (Dealer)" : null}
-        {player === round.trumpCaller && round.trumpCallerAlone
-          ? " (Alone)"
-          : null}
-      </Text>
+      <View
+        style={
+          horizontal ? styles.playerNameHorizontal : styles.playerNameVertical
+        }
+      >
+        <Text
+          style={[
+            styles.playerNameText,
+            player === round.turnPlayer ? styles.highlightName : null
+          ]}
+        >
+          {playerNames !== undefined ? playerNames[player] : null}
+        </Text>
+        {player === round.dealer ? (
+          <Text style={styles.playerNameText}>(Dealer)</Text>
+        ) : null}
+        {player === round.trumpCaller && round.trumpCallerAlone ? (
+          <Text style={styles.playerNameText}>(Alone)</Text>
+        ) : null}
+      </View>
     );
   }
 
   return (
     <View style={[styles.root, style]}>
       <View style={styles.topRow}>
-        {renderPlayerName(topPlayer)}
+        {renderPlayerName(topPlayer, true)}
         {playerViews[topPlayer]}
       </View>
       <View style={styles.middleRow}>
         <View style={styles.middleSide}>
-          {renderPlayerName(leftPlayer)}
+          {renderPlayerName(leftPlayer, false)}
           {playerViews[leftPlayer]}
         </View>
         <View style={styles.center}>{centerView}</View>
         <View style={[styles.middleSide, styles.middleRight]}>
-          {renderPlayerName(rightPlayer)}
+          {renderPlayerName(rightPlayer, false)}
           {playerViews[rightPlayer]}
         </View>
       </View>
       <View style={styles.bottomRow}>
-        {renderPlayerName(player)}
+        {renderPlayerName(player, true)}
         {playerViews[player]}
       </View>
     </View>
@@ -94,6 +107,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: 96
   },
+  playerNameHorizontal: {
+    flexDirection: "row"
+  },
+  playerNameVertical: {},
+  playerNameText: { marginRight: 2 },
   highlightName: {
     fontWeight: "700"
   }

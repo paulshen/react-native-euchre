@@ -98,15 +98,7 @@ export default function GameScreen() {
             player={player}
             setPlayer={setPlayer}
           />
-        ) : (
-          <Button
-            title="Leave Game"
-            onPress={() => {
-              setGameId(undefined);
-              setPlayer(undefined);
-            }}
-          />
-        )}
+        ) : null}
       </View>
     </GameIdContext.Provider>
   );

@@ -3,6 +3,7 @@ import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { changeName } from "../game/Controller";
 import { Game } from "../game/Game";
 import { Player } from "../game/Player";
+import CustomButton from "./CustomButton";
 
 function YourSeat({
   playerNames,
@@ -57,28 +58,43 @@ export default function WaitingRoomScreen({
   }
   return (
     <View style={styles.root}>
-      <Text>{gameId}</Text>
+      <Text style={styles.title}>Game {gameId}</Text>
       <View style={{ flexDirection: "row" }}>
         <View>
-          <Text>Team One</Text>
-          <Text>Seat One</Text>
-          <Text>{playerNames[Player.One]}</Text>
-          <Button title="Sit Here" onPress={() => setPlayer(Player.One)} />
-          <Text>Seat Three</Text>
-          <Text>{playerNames[Player.Three]}</Text>
-          <Button title="Sit Here" onPress={() => setPlayer(Player.Three)} />
+          <Text style={styles.teamLabel}>Team One</Text>
+          <Text style={styles.playerName}>{playerNames[Player.One]}</Text>
+          <CustomButton
+            label="Sit Here"
+            onPress={() => setPlayer(Player.One)}
+            style={styles.button}
+          />
+          <Text style={styles.playerName}>{playerNames[Player.Three]}</Text>
+          <CustomButton
+            label="Sit Here"
+            onPress={() => setPlayer(Player.Three)}
+            style={styles.button}
+          />
         </View>
+        <View style={styles.teamSpacer} />
         <View>
-          <Text>Team Two</Text>
-          <Text>Seat Two</Text>
-          <Text>{playerNames[Player.Two]}</Text>
-          <Button title="Sit Here" onPress={() => setPlayer(Player.Two)} />
-          <Text>Seat Four</Text>
-          <Text>{playerNames[Player.Four]}</Text>
-          <Button title="Sit Here" onPress={() => setPlayer(Player.Four)} />
+          <Text style={styles.teamLabel}>Team Two</Text>
+          <Text style={styles.playerName}>{playerNames[Player.Two]}</Text>
+          <CustomButton
+            label="Sit Here"
+            onPress={() => setPlayer(Player.Two)}
+            style={styles.button}
+          />
+          <Text style={styles.playerName}>{playerNames[Player.Four]}</Text>
+          <CustomButton
+            label="Sit Here"
+            onPress={() => setPlayer(Player.Four)}
+            style={styles.button}
+          />
         </View>
       </View>
-      <Text>The game will start when every seat has a name.</Text>
+      <Text style={styles.note}>
+        The game will start when every seat has a name.
+      </Text>
       {player !== undefined ? (
         <YourSeat
           playerNames={playerNames}
@@ -94,7 +110,17 @@ export default function WaitingRoomScreen({
 
 const styles = StyleSheet.create({
   root: {
+    alignItems: "center",
     flex: 1,
     paddingTop: 48
-  }
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 32
+  },
+  button: { marginBottom: 24 },
+  teamLabel: { fontSize: 18, marginBottom: 16, fontWeight: "600" },
+  teamSpacer: { width: 48 },
+  playerName: { fontSize: 18, marginBottom: 8 },
+  note: { marginTop: 16 }
 });
