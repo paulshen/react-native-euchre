@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Card } from "../game/Card";
@@ -71,6 +72,13 @@ export default function ActiveRoundScreen({
   round: Round;
   player: Player;
 }) {
+  React.useEffect(() => {
+    if (round.turnPlayer === player) {
+      // Buzz when it's your turn
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
+  }, [round.turnPlayer]);
+
   const gameId = React.useContext(GameIdContext)!;
   const playerCards = round.hands[player];
   const onCardSelect = (card: Card) => {
