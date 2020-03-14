@@ -24,16 +24,22 @@ function PlayerSwitcher({
   player: Player;
   setPlayer: (player: Player) => void;
 }) {
+  function getLabel(p: Player) {
+    if (playerNames[p] !== undefined) {
+      return `Player ${Player[p]} (${playerNames[p]})`;
+    }
+    return `Player ${Player[p]}`;
+  }
   return (
     <Picker
       selectedValue={player}
       onValueChange={itemValue => setPlayer(itemValue)}
       style={styles.playerSwitcher}
     >
-      <Picker.Item label="Player One" value={Player.One} />
-      <Picker.Item label="Player Two" value={Player.Two} />
-      <Picker.Item label="Player Three" value={Player.Three} />
-      <Picker.Item label="Player Four" value={Player.Four} />
+      <Picker.Item label={getLabel(Player.One)} value={Player.One} />
+      <Picker.Item label={getLabel(Player.Two)} value={Player.Two} />
+      <Picker.Item label={getLabel(Player.Three)} value={Player.Three} />
+      <Picker.Item label={getLabel(Player.Four)} value={Player.Four} />
     </Picker>
   );
 }
