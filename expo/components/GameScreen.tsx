@@ -88,13 +88,6 @@ export default function GameScreen() {
     <GameIdContext.Provider value={gameId}>
       <View style={styles.root}>
         {body}
-        <Button
-          title="Leave Game"
-          onPress={() => {
-            setGameId(undefined);
-            setPlayer(undefined);
-          }}
-        />
         <TouchableOpacity
           style={styles.togglePlayerSwitcher}
           onLongPress={() => setShowPlayerSwitcher(show => !show)}
@@ -105,7 +98,15 @@ export default function GameScreen() {
             player={player}
             setPlayer={setPlayer}
           />
-        ) : null}
+        ) : (
+          <Button
+            title="Leave Game"
+            onPress={() => {
+              setGameId(undefined);
+              setPlayer(undefined);
+            }}
+          />
+        )}
       </View>
     </GameIdContext.Provider>
   );

@@ -95,10 +95,10 @@ export default function ActiveRoundScreen({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingTop: 48
+    paddingTop: 32
   },
   cards: {
-    marginTop: 16
+    marginTop: 32
   },
   scoreView: {
     flexDirection: "row",
