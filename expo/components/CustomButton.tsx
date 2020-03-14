@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingVertical: 16
+    paddingVertical: 12
   },
   customButtonText: {
     color: "#ffffff",
