@@ -28,6 +28,7 @@ function PlayerSwitcher({
     <Picker
       selectedValue={player}
       onValueChange={itemValue => setPlayer(itemValue)}
+      style={styles.playerSwitcher}
     >
       <Picker.Item label="Player One" value={Player.One} />
       <Picker.Item label="Player Two" value={Player.Two} />
@@ -119,5 +120,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     top: 32
+  },
+  playerSwitcher: {
+    backgroundColor: "#ffffff"
   }
 });

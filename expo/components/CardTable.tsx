@@ -1,7 +1,13 @@
 import * as React from "react";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { Player, playerToLeft, playerToRight } from "../game/Player";
-import { Round } from "../game/Round";
+import { getWinnerOfTrick, Round } from "../game/Round";
+
+function getNumTricksWon(player: Player, round: Round): number {
+  return round.finishedTricks.filter(
+    trick => getWinnerOfTrick(trick, round.trumpSuit) === player
+  ).length;
+}
 
 export default function CardTable({
   player,
@@ -23,6 +29,8 @@ export default function CardTable({
   const rightPlayer = playerToRight(player);
 
   function renderPlayerName(player: Player, horizontal: boolean) {
+    const numTricksWon = getNumTricksWon(player, round);
+
     return (
       <View
         style={
@@ -42,6 +50,9 @@ export default function CardTable({
         ) : null}
         {player === round.trumpCaller && round.trumpCallerAlone ? (
           <Text style={styles.playerNameText}>(Alone)</Text>
+        ) : null}
+        {numTricksWon > 0 ? (
+          <Text style={styles.playerNameText}>[{numTricksWon}]</Text>
         ) : null}
       </View>
     );

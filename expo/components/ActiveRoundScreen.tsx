@@ -29,12 +29,24 @@ function ScoreView({ game }: { game: Game }) {
   if (game.playerNames === undefined) {
     return null;
   }
+
+  function renderName(player: Player, onRight: boolean) {
+    const isTrumpCaller = game.currentRound?.trumpCaller === player;
+    return (
+      <Text>
+        {onRight && isTrumpCaller ? " (Caller)" : null}
+        {game.playerNames[player]}
+        {!onRight && isTrumpCaller ? " (Caller)" : null}
+      </Text>
+    );
+  }
+
   return (
     <View style={styles.scoreView}>
       <View style={styles.scoreUnit}>
         <View>
-          <Text>{game.playerNames[0]}</Text>
-          <Text>{game.playerNames[2]}</Text>
+          {renderName(Player.One, false)}
+          {renderName(Player.Three, false)}
         </View>
         <Text style={styles.scoreText}>{teamScores[Team.One]}</Text>
       </View>
@@ -42,8 +54,8 @@ function ScoreView({ game }: { game: Game }) {
       <View style={styles.scoreUnit}>
         <Text style={styles.scoreText}>{teamScores[Team.Two]}</Text>
         <View style={styles.scoreNamesRight}>
-          <Text>{game.playerNames[1]}</Text>
-          <Text>{game.playerNames[3]}</Text>
+          {renderName(Player.Two, true)}
+          {renderName(Player.Four, true)}
         </View>
       </View>
     </View>

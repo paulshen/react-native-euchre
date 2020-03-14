@@ -13,7 +13,7 @@ function renderCard(player: Player, round: Round, highlight: boolean) {
     return <CardView card={card} style={highlight ? styles.highlight : null} />;
   }
   if (round.turnPlayer === player) {
-    return <Text>Waiting</Text>;
+    return <Text>Turn</Text>;
   }
   return null;
 }
