@@ -10,7 +10,14 @@ function renderCallStatus(player: Player, round: Round) {
   if (player === round.turnPlayer) {
     return <Text>Waiting</Text>;
   }
-  return didPlayerGo(player, round.dealer, round.turnPlayer) ? (
+  if (player === round.trumpCaller) {
+    return <Text>Caller</Text>;
+  }
+  return didPlayerGo(
+    player,
+    round.dealer,
+    round.trumpCaller !== null ? round.trumpCaller : round.turnPlayer
+  ) ? (
     <Text>Pass</Text>
   ) : null;
 }
