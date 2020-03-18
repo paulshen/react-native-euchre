@@ -171,7 +171,7 @@ export function playCard(
         ),
         "currentRound.currentTrick": {
           cards: { [player]: card },
-          suit: card.suit
+          suit: getEffectiveSuit(card, round.trumpSuit!)
         },
         [`currentRound.hands.${player}`]: removeCard(round.hands[player], card)
       });
